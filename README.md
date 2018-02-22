@@ -1,12 +1,12 @@
 ## Computation of optimal transport and related hedging problems via neural networks and penalization
 ____________________________
 
-This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via neural networks and penalization"](https://arxiv.org/)
+This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via neural networks and penalization"](https://arxiv.org/) (Link to be inserted)
 
 ### Prerequisites
 
 - Python, Tensorflow, NumPy, Matplotlib, Seaborn, Pandas
-- The programs were tested with Python 3.5.3, but should run with other versions as well.
+- The programs were tested with Python 3.5.3
 
 ### Running the programs
 
