@@ -1,5 +1,11 @@
+#!/usr/bin/env python
+
 import os, sys
-sys.path.append(os.getcwd())
+sys.path.append(os.path.dirname(os.getcwd()))
+
+import GAN_Toy.tflib as lib
+import GAN_Toy.tflib.ops.linear
+import GAN_Toy.tflib.plot
 
 import random
 import time
@@ -11,10 +17,6 @@ import numpy as np
 import tensorflow as tf
 import sklearn.datasets
 
-import GAN_Toy.tflib as lib
-import GAN_Toy.tflib.ops.linear
-import GAN_Toy.tflib.plot
-
 # CHANGES #
 # The main changes of this program compared to https://github.com/igul222/improved_wgan_training are:
 # - Adjusted code to Python 3
@@ -23,8 +25,11 @@ import GAN_Toy.tflib.plot
 #   this keeps the number of parameters comparable to the original setting
 # - implementing a different penalization method (one sided)
 
-# - Adjusted parameters of AdamOptimizer to the ones used in all other programs. In adversarial settings (if the
-#   generator isn't fixed, then it might be better to reduce it again.
+# - The standard Adam parameter used in all other programs don't work so well in an adversarial setting
+#   as they are too high. So we kept the parameters from the initial program. For a fixed generator, one can adjust
+#   them for higher accuracy of the transport problem
+# - Further, in an adversarial setting, a higher number of CRITIC_ITERS is needed with one sided penalization,
+#   in particular for the more exotic cost functions c.
 
 # - Instead of plotting the contour of the Lipschitz function, the sum of the functions from the dual are plotted
 
@@ -34,20 +39,21 @@ import GAN_Toy.tflib.plot
 # c = 3  # Second order Wasserstein GAN with L^1 norm.
 # c = 4  # c(x,y) = exp(|x_1 - y_1|) + exp(|x_2 - y_2|) - Doesn't work well
 # c = 5  # c(x,y) = <x, y>  - Doesn't work well
-c = 6  # c(x,y) = min(1, max(0, |x-y| - 0.1) * 10)  - This leads to interesting decision boundaries
-# c = 7  # c(x,y) = sigmoid(10 * |x-y|)
+c = 6  # c(x,y) = min(1, max(0, |x-y| - 0.1) * 10)  - Interesting for fixed generator, useless (because bounded) in an
+#                                                     adversarial setting. One would have to bound the network output.
+# c = 7  # c(x,y) = sigmoid(10 * |x-y|) - Similar to c = 6.
 gamma_value = 20  # The penalization factor. Here, we always use L^2 penalization.
 # END CHANGES #
 
 MODE = 'wgan-gp' # wgan or wgan-gp
-DATASET = '25gaussians' # 8gaussians, 25gaussians, swissroll
+DATASET = '8gaussians' # 8gaussians, 25gaussians, swissroll
 DIM = 512 # Model dimensionality
 DIM2 = 256  # Model dimensionality for two functions in dual representation
 FIXED_GENERATOR = True  # whether to hold the generator fixed at real data plus
                         # Gaussian noise, as in the plots in the paper
 LAMBDA = .1 # Smaller lambda makes things faster for toy tasks, but isn't
             # necessary if you increase CRITIC_ITERS enough
-CRITIC_ITERS = 5 # How many critic iterations per generator iteration
+CRITIC_ITERS = 20 # How many critic iterations per generator iteration
 BATCH_SIZE = 256 # Batch size
 ITERS = 100000 # how many generator iterations to train for
 
@@ -152,10 +158,10 @@ gen_params = lib.params_with_name('Generator')
 if MODE == 'wgan-gp':
     disc_train_op = tf.train.AdamOptimizer(
         learning_rate=1e-4, 
-        # beta1=0.5,
-        # beta2=0.9
-        beta1=0.99,
-        beta2=0.995
+        beta1=0.5,
+        beta2=0.9
+        # beta1=0.99,
+        # beta2=0.995
     ).minimize(
         disc_cost2,
         var_list=disc_params
@@ -230,7 +236,8 @@ def generate_image(true_dist):
     plt.contour(x,y,disc_map.reshape((len(x), len(y))).transpose())
 
     plt.scatter(true_dist[:, 0], true_dist[:, 1], c='orange',  marker='+')
-    # plt.scatter(samples[:, 0],    samples[:, 1],    c='green', marker='+')
+    if not FIXED_GENERATOR:
+        plt.scatter(samples[:, 0],    samples[:, 1],    c='green', marker='+')
 
     plt.savefig('frame'+str(frame_index[0])+'.jpg')
     frame_index[0] += 1

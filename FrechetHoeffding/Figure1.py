@@ -6,10 +6,6 @@ import matplotlib.pyplot as plt
 import time
 import os
 
-"""
-To be added: This file contains methods for ...
-"""
-
 
 def running_mean(l, k):
     """ Function to plot the running k-mean of a list l of values
@@ -61,7 +57,7 @@ def build_graph(dimension, penalty_method='L2', z_value=(0, 0.25)):
     """Specify network structure
 
     :param dimension: Here: Number of marginals (i.e. dimension of the whole space). Each marginal has dimension 1
-    :param penalty_method: penalty_method: Specifies which penalty to use: Currently 'L2' or 'exp'
+    :param penalty_method: Specifies which penalty to use: Currently 'L2' or 'exp'
     :param z_value: Parameter for the function f
     :return: Various elements of the graph.
     """
@@ -201,8 +197,8 @@ def run_experiments(z_value, x, gamma, train_op, target_function, num_experiment
 if __name__ == '__main__':
     d = 2  # Dimension
     num_experiments_1 = 4  # Specifies how many different values for $\gamma$ and batch_size are calculated/plotted
-    # gamma_val = (80, 80, 10, 10)  # These are the gamma values for the L^2 penalization in the paper
-    gamma_val = (40, 40, 10, 10)  # These are the gamma values for the exponential penalization in the paper
+    gamma_val = (80, 80, 10, 10)  # These are the gamma values for the L^2 penalization in the paper
+    # gamma_val = (40, 40, 10, 10)  # These are the gamma values for the exponential penalization in the paper
     batch_val = (128, 2048, 128, 2048)  # batch sizes used for the individual experiments
     meanN = 1000  # This specifies over how many iterations the running mean is taken in the plot.
     n_1 = 50000  # Number of iterations
@@ -214,8 +210,8 @@ if __name__ == '__main__':
 
     # As penalty_method, currently only L^2 or exponential are included. New penalization methods have to be coded in
     # the build_graph section (the variable 'penal').
-    # penalty_method_1 = 'L2'
-    penalty_method_1 = 'exp'
+    penalty_method_1 = 'L2'
+    # penalty_method_1 = 'exp'
 
     X, gamma_1, train_op_1, target_function_1 = build_graph(dimension=d, penalty_method=penalty_method_1, z_value=z_val)
 

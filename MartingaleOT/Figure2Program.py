@@ -45,8 +45,8 @@ def build_graph(penalty_method='L2', rho=2.3, batch_size=2**10):
 
     :param penalty_method: Only L^2 penalty function ('L2') currently included
     :param rho: parameter of function f
-    :param batch_size: needed here (compared to other programs) since our implementation of the function f needs it
-    :return:
+    :param batch_size: needed here (compared to other programs) because of the implementation of the function f
+    :return: Various elements of the graph
     """
 
     d = 2  # Dimension - At the moment this is fix here as no higher dimensions were needed.
@@ -129,12 +129,12 @@ if __name__ == '__main__':
     # and already needs to be specified when building the graph.
     # Further, currently the graph only allows dimension 2 but this could be adjusted easily
 
-    n_experiments = 3
-    n_runs_each = 100
-    gamma_values = [10 * (2 ** k) for k in range(8, 8 + n_experiments)]
-    batch_values = [2 ** 10] * n_experiments
-    n = 20000
-    final_n = 1000
+    n_experiments = 9  # number of different gamma values ran. All nine as in the paper will take a long time
+    n_runs_each = 100  # number of independent runs for each experiment
+    gamma_values = [10 * (2 ** k) for k in range(2, 2 + n_experiments)]  # penalization factors for each experiment
+    batch_values = [2 ** 10] * n_experiments  # batch sizes for each experiment
+    n = 20000  # number of iterations for each run
+    final_n = 1000  # final number of iterations to estimate $\hat{\phi}_{\mu,\gamma}^m(f)$
 
     X, gamma_1, train_op_1, target_function_1 = build_graph()
     run_experiments(x=X, gamma=gamma_1, target_function=target_function_1, train_op=train_op_1,

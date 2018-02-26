@@ -1,7 +1,7 @@
 ## Computation of optimal transport and related hedging problems via neural networks and penalization
 ____________________________
 
-This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via neural networks and penalization"](https://arxiv.org/) (Link to be inserted)
+This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via neural networks and penalization"](https://arxiv.org/abs/1802.08539)
 
 ### Prerequisites
 
@@ -11,7 +11,7 @@ This repository contains the implementations of the numerical examples in ["Comp
 ### Running the programs
 
 - Each folder corresponds to one subsection in chapter 4 of the paper.
-- Each program is self-contained and the default parameters are as used for the paper. At the bottom of each file, parameter values can be adjusted.
+- The default parameters of the programs are as used for the paper. At the bottom of each file, parameter values can be adjusted.
 - Some output text files required for the plot programs are included. 
 
 ### GAN Toy
