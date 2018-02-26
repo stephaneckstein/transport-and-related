@@ -1,7 +1,7 @@
-## Computation of optimal transport and related hedging problems via neural networks and penalization
+## Computation of optimal transport and related hedging problems via penalization and neural networks
 ____________________________
 
-This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via neural networks and penalization"](https://arxiv.org/abs/1802.08539)
+This repository contains the implementations of the numerical examples in ["Computation of optimal transport and related hedging problems via penalization and neural networks"](https://arxiv.org/abs/1802.08539)
 
 ### Prerequisites
 
